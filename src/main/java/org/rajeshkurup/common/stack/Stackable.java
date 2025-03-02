@@ -1,20 +1,26 @@
 package org.rajeshkurup.common.stack;
 
 
-public interface Stackable<T> {
+import java.util.Optional;
+import org.rajeshkurup.common.list.Listable;
+import org.rajeshkurup.common.model.Copyable;
+
+public interface Stackable<T extends Listable<T> & Comparable<T> & Copyable<T>> {
 
     public void push(T node);
 
-    public T pop();
+    public Optional<T> pop();
 
-    public T peek();
+    public Optional<T> peek();
 
-    public T maxPop();
+    public Optional<T> maxPop();
 
-    public T maxPeek();
+    public Optional<T> maxPeek();
 
-    public T minPop();
+    public Optional<T> minPop();
 
-    public T minPeek();
+    public Optional<T> minPeek();
+
+    public int size();
 
 }

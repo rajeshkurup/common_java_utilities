@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import org.rajeshkurup.common.mapper.JsonSerializer;
 import org.rajeshkurup.common.model.ApiCallDetails;
+import org.rajeshkurup.common.stack.MinMaxStack;
 
 public class Main {
 
@@ -31,6 +32,50 @@ public class Main {
         JsonSerializer<ApiCallDetails> jsonSerializerIst = new JsonSerializer<>(ApiCallDetails.class, "Asia/Kolkata");
         ApiCallDetails apiCallDetails3 = jsonSerializerIst.toObject(jsonTxt);
         System.out.println(jsonSerializerIst.toText(apiCallDetails3) + "\n");
+
+
+        MinMaxStack<ApiCallDetails> minMaxStack = new MinMaxStack<>();
+        minMaxStack.push(apiCallDetails);
+        System.out.println(minMaxStack.size());
+        apiCallDetails.setRecId(1010L);
+        minMaxStack.push(apiCallDetails);
+        System.out.println(minMaxStack.size());
+        apiCallDetails.setRecId(1020L);
+        minMaxStack.push(apiCallDetails);
+        System.out.println(minMaxStack.size());
+        apiCallDetails.setRecId(1005L);
+        minMaxStack.push(apiCallDetails);
+        System.out.println(minMaxStack.size());
+        apiCallDetails.setRecId(1015L);
+        minMaxStack.push(apiCallDetails);
+        System.out.println(minMaxStack.size());
+        apiCallDetails.setRecId(1004L);
+        minMaxStack.push(apiCallDetails);
+        System.out.println(minMaxStack.size());
+
+        minMaxStack.peek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        minMaxStack.maxPeek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        minMaxStack.minPeek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        System.out.println();
+
+        minMaxStack.maxPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        minMaxStack.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        minMaxStack.minPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        minMaxStack.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        minMaxStack.maxPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        minMaxStack.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        minMaxStack.minPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxStack.size());
+        System.out.println();
     }
 
 }
