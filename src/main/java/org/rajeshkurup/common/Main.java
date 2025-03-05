@@ -1,18 +1,14 @@
 package org.rajeshkurup.common;
 
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.spi.DecimalFormatSymbolsProvider;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-
+import java.util.stream.LongStream;
 import org.rajeshkurup.common.mapper.JsonSerializer;
 import org.rajeshkurup.common.model.ApiCallDetails;
 import org.rajeshkurup.common.prime.PrimeChecker;
 import org.rajeshkurup.common.stack.MinMaxStack;
-
-import javax.swing.text.NumberFormatter;
 
 public class Main {
 
@@ -91,6 +87,15 @@ public class Main {
         long timeTakenMs = new Date().getTime() - start.getTime();
         System.out.println(new DecimalFormat("###,###,###,### = ").format(num) + num);
         System.out.println("TimeTakenMs = " + timeTakenMs);
+        System.out.println();
+
+        long limit = 1000000007L;
+        start = new Date();
+        long sum = LongStream.range(1, limit).parallel().sum();
+        timeTakenMs = new Date().getTime() - start.getTime();
+        System.out.println("Sum = " + sum);
+        System.out.println("TimeTakenMs = " + timeTakenMs);
+        System.out.println();
     }
 
 }
