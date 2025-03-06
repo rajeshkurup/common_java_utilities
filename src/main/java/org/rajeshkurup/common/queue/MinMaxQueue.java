@@ -1,21 +1,23 @@
-package org.rajeshkurup.common.stack;
+package org.rajeshkurup.common.queue;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import lombok.NonNull;
 import org.rajeshkurup.common.lambda.CopyFunction;
 import org.rajeshkurup.common.list.Listable;
 import org.rajeshkurup.common.model.Copyable;
 
-public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> implements Stackable<T> {
+public class MinMaxQueue<T extends Listable<T> & Comparable<T> & Copyable<T>> implements Queueable<T> {
 
     private T head;
+    private T tail;
     private final SortedSet<T> nodeSet;
     private final CopyFunction<T> copyFunction;
 
-    public MinMaxStack() {
+    public MinMaxQueue() {
         this.nodeSet = new TreeSet<>();
 
         this.copyFunction = (final T node) -> {
@@ -27,15 +29,16 @@ public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> im
     }
 
     @Override
-    public void push(@NonNull final T node) {
+    public void push(@NonNull final  T node) {
         T newNode = this.copyFunction.deepCopy(node);
         if(this.nodeSet.add(newNode)) {
-            newNode.setNext(this.head);
-            if(Objects.nonNull(this.head)) {
-                this.head.setPrev(newNode);
+            if(Objects.nonNull(this.tail)) {
+                newNode.setPrev(this.tail);
+                this.tail.setNext(newNode);
+            } else {
+                this.head = newNode;
             }
-            this.head = newNode;
-            this.nodeSet.add(newNode);
+            this.tail = newNode;
         }
     }
 
@@ -44,8 +47,8 @@ public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> im
         T result = null;
         if(Objects.nonNull(this.head)) {
             result = this.head;
-            detachNode(result);
             this.nodeSet.remove(result);
+            detachNode(result);
         }
         return Optional.ofNullable(result);
     }
@@ -95,11 +98,15 @@ public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> im
             node.getPrev().setNext(node.getNext());
             if(node.hasNext()) {
                 node.getNext().setPrev(node.getPrev());
+            } else {
+                this.tail = node.getPrev();
             }
         } else {
             this.head = node.getNext();
             if(Objects.nonNull(this.head)) {
                 this.head.setPrev(null);
+            } else {
+                this.tail = null;
             }
         }
         node.setPrev(null);

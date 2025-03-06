@@ -8,7 +8,10 @@ import java.util.stream.LongStream;
 import org.rajeshkurup.common.mapper.JsonSerializer;
 import org.rajeshkurup.common.model.ApiCallDetails;
 import org.rajeshkurup.common.prime.PrimeChecker;
+import org.rajeshkurup.common.queue.MinMaxQueue;
+import org.rajeshkurup.common.queue.Queueable;
 import org.rajeshkurup.common.stack.MinMaxStack;
+import org.rajeshkurup.common.stack.Stackable;
 
 public class Main {
 
@@ -38,7 +41,7 @@ public class Main {
         System.out.println(jsonSerializerIst.toText(apiCallDetails3) + "\n");
 
 
-        MinMaxStack<ApiCallDetails> minMaxStack = new MinMaxStack<>();
+        Stackable<ApiCallDetails> minMaxStack = new MinMaxStack<>();
         minMaxStack.push(apiCallDetails);
         System.out.println(minMaxStack.size());
         apiCallDetails.setRecId(1010L);
@@ -95,6 +98,50 @@ public class Main {
         timeTakenMs = new Date().getTime() - start.getTime();
         System.out.println("Sum = " + sum);
         System.out.println("TimeTakenMs = " + timeTakenMs);
+        System.out.println();
+
+        Queueable<ApiCallDetails> minMaxQueue = new MinMaxQueue<>();
+        apiCallDetails.setRecId(1001L);
+        minMaxQueue.push(apiCallDetails);
+        System.out.println(minMaxQueue.size());
+        apiCallDetails.setRecId(1010L);
+        minMaxQueue.push(apiCallDetails);
+        System.out.println(minMaxQueue.size());
+        apiCallDetails.setRecId(1020L);
+        minMaxQueue.push(apiCallDetails);
+        System.out.println(minMaxQueue.size());
+        apiCallDetails.setRecId(1005L);
+        minMaxQueue.push(apiCallDetails);
+        System.out.println(minMaxQueue.size());
+        apiCallDetails.setRecId(1015L);
+        minMaxQueue.push(apiCallDetails);
+        System.out.println(minMaxQueue.size());
+        apiCallDetails.setRecId(1004L);
+        minMaxQueue.push(apiCallDetails);
+        System.out.println(minMaxQueue.size());
+
+        minMaxQueue.peek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        minMaxQueue.maxPeek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        minMaxQueue.minPeek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        System.out.println();
+
+        minMaxQueue.maxPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        minMaxQueue.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        minMaxQueue.minPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        minMaxQueue.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        minMaxQueue.maxPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        minMaxQueue.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
+        minMaxQueue.minPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(minMaxQueue.size());
         System.out.println();
     }
 
