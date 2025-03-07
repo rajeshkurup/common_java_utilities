@@ -2,16 +2,16 @@ package org.rajeshkurup.common.list;
 
 public interface Listable<T> {
 
-    public T getNext();
+    T getNext();
 
-    public void setNext(T next);
+    void setNext(T next);
 
-    public T getPrev();
+    T getPrev();
 
-    public void setPrev(T prev);
+    void setPrev(T prev);
 
-    public boolean hasNext();
+    boolean hasNext();
 
-    public boolean hasPrev();
+    boolean hasPrev();
 
 }

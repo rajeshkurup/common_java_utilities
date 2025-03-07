@@ -7,7 +7,7 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.rajeshkurup.common.list.Listable;
-import org.rajeshkurup.common.mapper.JsonSerializer;
+import org.rajeshkurup.common.mapper.JsonSerializer.JsonSerializerBuilder;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_EMPTY)
@@ -97,17 +97,17 @@ public class ApiCallDetails implements Listable<ApiCallDetails>, Comparable<ApiC
 
     @Override
     public String toString() {
-        return new JsonSerializer<>(ApiCallDetails.class).toText(this);
+        return JsonSerializerBuilder.builder(ApiCallDetails.class).build().toJson(this);
     }
 
     @Override
     public ApiCallDetails clone() {
         try {
             ApiCallDetails clone = (ApiCallDetails) super.clone();
-            clone.setUpdatedTs(this.updatedTs);
+            clone.setUpdatedTs(ZonedDateTime.from(this.updatedTs));
             clone.setTier(this.tier);
-            clone.setEndTs(this.endTs);
-            clone.setStartTs(this.startTs);
+            clone.setEndTs(ZonedDateTime.from(this.endTs));
+            clone.setStartTs(ZonedDateTime.from(this.startTs));
             clone.setEndpoint(this.endpoint);
             clone.setHttpStatus(this.httpStatus);
             clone.setHttpMethod(this.httpMethod);

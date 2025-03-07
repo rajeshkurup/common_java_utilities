@@ -6,11 +6,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.stream.LongStream;
 import org.rajeshkurup.common.mapper.JsonSerializer;
+import org.rajeshkurup.common.mapper.JsonSerializer.JsonSerializerBuilder;
 import org.rajeshkurup.common.model.ApiCallDetails;
 import org.rajeshkurup.common.prime.PrimeChecker;
 import org.rajeshkurup.common.queue.MinMaxQueue;
+import org.rajeshkurup.common.queue.QueueEx;
 import org.rajeshkurup.common.queue.Queueable;
 import org.rajeshkurup.common.stack.MinMaxStack;
+import org.rajeshkurup.common.stack.StackEx;
 import org.rajeshkurup.common.stack.Stackable;
 
 public class Main {
@@ -32,13 +35,13 @@ public class Main {
         String jsonTxt = apiCallDetails.toString();
         System.out.println(jsonTxt + "\n");
 
-        JsonSerializer<ApiCallDetails> jsonSerializerPst = new JsonSerializer<>(ApiCallDetails.class, "America/Los_Angeles");
-        ApiCallDetails apiCallDetails2 = jsonSerializerPst.toObject(jsonTxt);
-        System.out.println(jsonSerializerPst.toText(apiCallDetails2) + "\n");
+        JsonSerializer<ApiCallDetails> jsonSerializerPst = JsonSerializerBuilder.builder(ApiCallDetails.class).timeZone("America/Los_Angeles").build();
+        ApiCallDetails apiCallDetails2 = jsonSerializerPst.fromJson(jsonTxt);
+        System.out.println(jsonSerializerPst.toJson(apiCallDetails2) + "\n");
 
-        JsonSerializer<ApiCallDetails> jsonSerializerIst = new JsonSerializer<>(ApiCallDetails.class, "Asia/Kolkata");
-        ApiCallDetails apiCallDetails3 = jsonSerializerIst.toObject(jsonTxt);
-        System.out.println(jsonSerializerIst.toText(apiCallDetails3) + "\n");
+        JsonSerializer<ApiCallDetails> jsonSerializerIst = JsonSerializerBuilder.builder(ApiCallDetails.class).timeZone("Asia/Kolkata").build();
+        ApiCallDetails apiCallDetails3 = jsonSerializerIst.fromJson(jsonTxt);
+        System.out.println(jsonSerializerIst.toJson(apiCallDetails3) + "\n");
 
 
         Stackable<ApiCallDetails> minMaxStack = new MinMaxStack<>();
@@ -142,6 +145,94 @@ public class Main {
         System.out.println(minMaxQueue.size());
         minMaxQueue.minPop().ifPresent(node -> System.out.println(node.getRecId()));
         System.out.println(minMaxQueue.size());
+        System.out.println();
+
+        StackEx<ApiCallDetails> stackEx = new StackEx<>();
+        apiCallDetails.setRecId(1001L);
+        stackEx.push(apiCallDetails);
+        System.out.println(stackEx.size());
+        apiCallDetails.setRecId(1010L);
+        stackEx.push(apiCallDetails);
+        System.out.println(stackEx.size());
+        apiCallDetails.setRecId(1020L);
+        stackEx.push(apiCallDetails);
+        System.out.println(stackEx.size());
+        apiCallDetails.setRecId(1005L);
+        stackEx.push(apiCallDetails);
+        System.out.println(stackEx.size());
+        apiCallDetails.setRecId(1015L);
+        stackEx.push(apiCallDetails);
+        System.out.println(stackEx.size());
+        apiCallDetails.setRecId(1004L);
+        stackEx.push(apiCallDetails);
+        System.out.println(stackEx.size());
+
+        stackEx.peek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        stackEx.maxPeek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        stackEx.minPeek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        System.out.println();
+
+        stackEx.maxPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        stackEx.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        stackEx.minPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        stackEx.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        stackEx.maxPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        stackEx.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        stackEx.minPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(stackEx.size());
+        System.out.println();
+
+        QueueEx<ApiCallDetails> queueEx = new QueueEx<>();
+        apiCallDetails.setRecId(1001L);
+        queueEx.push(apiCallDetails);
+        System.out.println(queueEx.size());
+        apiCallDetails.setRecId(1010L);
+        queueEx.push(apiCallDetails);
+        System.out.println(queueEx.size());
+        apiCallDetails.setRecId(1020L);
+        queueEx.push(apiCallDetails);
+        System.out.println(queueEx.size());
+        apiCallDetails.setRecId(1005L);
+        queueEx.push(apiCallDetails);
+        System.out.println(queueEx.size());
+        apiCallDetails.setRecId(1015L);
+        queueEx.push(apiCallDetails);
+        System.out.println(queueEx.size());
+        apiCallDetails.setRecId(1004L);
+        queueEx.push(apiCallDetails);
+        System.out.println(queueEx.size());
+
+        queueEx.peek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        queueEx.maxPeek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        queueEx.minPeek().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        System.out.println();
+
+        queueEx.maxPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        queueEx.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        queueEx.minPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        queueEx.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        queueEx.maxPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        queueEx.pop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
+        queueEx.minPop().ifPresent(node -> System.out.println(node.getRecId()));
+        System.out.println(queueEx.size());
         System.out.println();
     }
 

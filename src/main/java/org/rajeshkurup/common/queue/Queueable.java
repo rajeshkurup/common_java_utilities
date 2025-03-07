@@ -6,20 +6,20 @@ import org.rajeshkurup.common.model.Copyable;
 
 public interface Queueable<T extends Listable<T> & Comparable<T> & Copyable<T>> {
 
-    public void push(T node);
+    boolean push(T node);
 
-    public Optional<T> pop();
+    Optional<T> pop();
 
-    public Optional<T> peek();
+    Optional<T> peek();
 
-    public Optional<T> maxPop();
+    Optional<T> maxPop();
 
-    public Optional<T> maxPeek();
+    Optional<T> maxPeek();
 
-    public Optional<T> minPop();
+    Optional<T> minPop();
 
-    public Optional<T> minPeek();
+    Optional<T> minPeek();
 
-    public int size();
+    int size();
 
 }

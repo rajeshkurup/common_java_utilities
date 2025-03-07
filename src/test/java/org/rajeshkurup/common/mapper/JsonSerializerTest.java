@@ -17,9 +17,9 @@ public class JsonSerializerTest {
 
     @BeforeEach
     public void init() {
-        this.jsonSerializer = new JsonSerializer<>(ApiCallDetails.class);
-        this.jsonSerializerIst = new JsonSerializer<>(ApiCallDetails.class, "IST");
-        this.jsonSerializerPst = new JsonSerializer<>(TestObject.class, "PST");
+        this.jsonSerializer = JsonSerializer.JsonSerializerBuilder.builder(ApiCallDetails.class).timeZone("").build();
+        this.jsonSerializerIst = JsonSerializer.JsonSerializerBuilder.builder(ApiCallDetails.class).timeZone("IST").build();
+        this.jsonSerializerPst = JsonSerializer.JsonSerializerBuilder.builder(TestObject.class).timeZone("PST").build();
     }
 
     @AfterEach
@@ -30,8 +30,8 @@ public class JsonSerializerTest {
     }
 
     @Test
-    public void testToTextPass() {
-        String jsonTxt = this.jsonSerializer.toText(buildApiCallDetails());
+    public void testToJsonPass() {
+        String jsonTxt = this.jsonSerializer.toJson(buildApiCallDetails());
 
         String expJsonTxt = """
                             {"rec_id":1001,"endpoint":"/v1/google/search","client_id":"lombok","http_method":"POST","http_status":201,"tier":1,"start_ts":"2025/02/28 16:11:12.133 UTC","end_ts":"2025/02/28 17:11:12.133 UTC","updated_ts":"2025/02/28 18:11:12.133 UTC"}""";
@@ -40,8 +40,8 @@ public class JsonSerializerTest {
     }
 
     @Test
-    public void testToTextIstPass() {
-        String jsonTxt = this.jsonSerializerIst.toText(buildApiCallDetails());
+    public void testToJsonIstPass() {
+        String jsonTxt = this.jsonSerializerIst.toJson(buildApiCallDetails());
 
         String expJsonTxt = """
                             {"rec_id":1001,"endpoint":"/v1/google/search","client_id":"lombok","http_method":"POST","http_status":201,"tier":1,"start_ts":"2025/02/28 21:41:12.133 IST","end_ts":"2025/02/28 22:41:12.133 IST","updated_ts":"2025/02/28 23:41:12.133 IST"}""";
@@ -50,16 +50,16 @@ public class JsonSerializerTest {
     }
 
     @Test
-    public void testToTextFail() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> this.jsonSerializerPst.toText(new TestObject()));
+    public void testToJsonFail() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> this.jsonSerializerPst.toJson(new TestObject()));
     }
 
     @Test
-    public void testToObjectPass() {
+    public void testFromJsonPass() {
         String jsonTxt = """
                             {"rec_id":1001,"endpoint":"/v1/google/search","client_id":"lombok","http_method":"POST","http_status":201,"tier":1,"start_ts":"2025/02/28 08:11:12.133 PST","end_ts":"2025/02/28 09:11:12.133 PST","updated_ts":"2025/02/28 10:11:12.133 PST"}""";
 
-        ApiCallDetails apiCallDetails = this.jsonSerializer.toObject(jsonTxt);
+        ApiCallDetails apiCallDetails = this.jsonSerializer.fromJson(jsonTxt);
 
         Assertions.assertEquals(1001L, apiCallDetails.getRecId());
         Assertions.assertEquals("/v1/google/search", apiCallDetails.getEndpoint());
@@ -73,11 +73,11 @@ public class JsonSerializerTest {
     }
 
     @Test
-    public void testToObjectIstPass() {
+    public void testFromJsonIstPass() {
         String jsonTxt = """
                             {"rec_id":1001,"endpoint":"/v1/google/search","client_id":"lombok","http_method":"POST","http_status":201,"tier":1,"start_ts":"2025/02/28 08:11:12.133 PST","end_ts":"2025/02/28 09:11:12.133 PST","updated_ts":"2025/02/28 10:11:12.133 PST"}""";
 
-        ApiCallDetails apiCallDetails = this.jsonSerializerIst.toObject(jsonTxt);
+        ApiCallDetails apiCallDetails = this.jsonSerializerIst.fromJson(jsonTxt);
 
         Assertions.assertEquals(1001L, apiCallDetails.getRecId());
         Assertions.assertEquals("/v1/google/search", apiCallDetails.getEndpoint());
@@ -91,11 +91,11 @@ public class JsonSerializerTest {
     }
 
     @Test
-    public void testToObjectFail() {
+    public void testFromJsonFail() {
         String jsonTxt = """
                             {"rec_id":1001,"endpoint":"/v1/google/search","client_id":"lombok","http_method":"POST","http_status":201,"tier":1,"start_ts":"2025/02/28 08:11:12.133 PST","end_ts":"2025/02/28 09:11:12.133 PST","updated_ts":"2025/02/28 10:11:12.133 PST"}""";
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> this.jsonSerializerPst.toObject(jsonTxt));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> this.jsonSerializerPst.fromJson(jsonTxt));
     }
 
     private ApiCallDetails buildApiCallDetails() {

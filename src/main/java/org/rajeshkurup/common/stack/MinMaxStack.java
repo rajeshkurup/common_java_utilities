@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import lombok.NonNull;
-import org.rajeshkurup.common.lambda.CopyFunction;
+import org.rajeshkurup.common.lambda.Processor;
 import org.rajeshkurup.common.list.Listable;
 import org.rajeshkurup.common.model.Copyable;
 
@@ -13,22 +13,22 @@ public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> im
 
     private T head;
     private final SortedSet<T> nodeSet;
-    private final CopyFunction<T> copyFunction;
+    private final Processor.ProcessorInterface<T> copier;
 
     public MinMaxStack() {
         this.nodeSet = new TreeSet<>();
 
-        this.copyFunction = (final T node) -> {
+        this.copier = (final T node) -> {
             T newNode = node.deepCopy();
             newNode.setPrev(null);
             newNode.setNext(null);
-            return newNode;
+            return Optional.of(newNode);
         };
     }
 
     @Override
-    public void push(@NonNull final T node) {
-        T newNode = this.copyFunction.deepCopy(node);
+    public boolean push(@NonNull final T node) {
+        T newNode = this.copier.process(node).orElseThrow();
         if(this.nodeSet.add(newNode)) {
             newNode.setNext(this.head);
             if(Objects.nonNull(this.head)) {
@@ -36,7 +36,9 @@ public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> im
             }
             this.head = newNode;
             this.nodeSet.add(newNode);
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> im
 
     @Override
     public Optional<T> peek() {
-        return Optional.ofNullable(Objects.isNull(this.head) ? null : this.copyFunction.deepCopy(this.head));
+        return Optional.ofNullable(Objects.isNull(this.head) ? null : this.copier.process(this.head).orElseThrow());
     }
 
     @Override
@@ -67,7 +69,7 @@ public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> im
 
     @Override
     public Optional<T> maxPeek() {
-        return Optional.ofNullable(this.nodeSet.isEmpty() ? null : this.copyFunction.deepCopy(this.nodeSet.last()));
+        return Optional.ofNullable(this.nodeSet.isEmpty() ? null : this.copier.process(this.nodeSet.last()).orElseThrow());
     }
 
     @Override
@@ -82,7 +84,7 @@ public class MinMaxStack<T extends Listable<T> & Comparable<T> & Copyable<T>> im
 
     @Override
     public Optional<T> minPeek() {
-        return Optional.ofNullable(this.nodeSet.isEmpty() ? null : this.copyFunction.deepCopy(this.nodeSet.first()));
+        return Optional.ofNullable(this.nodeSet.isEmpty() ? null : this.copier.process(this.nodeSet.first()).orElseThrow());
     }
 
     @Override

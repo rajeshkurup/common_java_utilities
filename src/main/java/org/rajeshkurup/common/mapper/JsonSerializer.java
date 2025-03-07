@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import java.util.TimeZone;
+import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 
 public class JsonSerializer<T> {
 
@@ -12,17 +14,12 @@ public class JsonSerializer<T> {
     private final ObjectMapper objectMapper;
     private final Class<T> typeRef;
 
-    public JsonSerializer(final Class<T> typeRef) {
-        this.typeRef = typeRef;
-        this.objectMapper = JsonMapper.builder().findAndAddModules().defaultTimeZone(TimeZone.getTimeZone(TIME_ZONE_UTC)).build();
-    }
-
-    public JsonSerializer(final Class<T> typeRef, final String timeZone) {
+    private JsonSerializer(final Class<T> typeRef, final String timeZone) {
         this.typeRef = typeRef;
         this.objectMapper = JsonMapper.builder().findAndAddModules().defaultTimeZone(TimeZone.getTimeZone(timeZone)).build();
     }
 
-    public String toText(final T o) {
+    public String toJson(final T o) {
         try {
             return this.objectMapper.writeValueAsString(o);
         } catch(JsonProcessingException e) {
@@ -30,12 +27,39 @@ public class JsonSerializer<T> {
         }
     }
 
-    public T toObject(final String json) {
+    public T fromJson(final String json) {
         try {
             return this.objectMapper.readValue(json, this.typeRef);
         } catch(JsonProcessingException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public static class JsonSerializerBuilder<T> {
+
+        private final Class<T> typeRef;
+        private String timeZone;
+
+        private JsonSerializerBuilder(@NonNull final Class<T> typeRef) {
+            this.typeRef = typeRef;
+            this.timeZone = JsonSerializer.TIME_ZONE_UTC;
+        }
+
+        public JsonSerializerBuilder<T> timeZone(@NonNull final String timeZone) {
+            if(StringUtils.isNotBlank(timeZone)) {
+                this.timeZone =  timeZone;
+            }
+            return this;
+        }
+
+        public JsonSerializer<T> build() {
+            return new JsonSerializer<>(this.typeRef, this.timeZone);
+        }
+
+        public static <T> JsonSerializerBuilder<T> builder(@NonNull final Class<T> typeRef) {
+            return new JsonSerializerBuilder<>(typeRef);
+        }
+
     }
 
 }
