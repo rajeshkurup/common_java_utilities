@@ -5,6 +5,8 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.stream.LongStream;
+
+import org.rajeshkurup.common.list.IntArrayList;
 import org.rajeshkurup.common.mapper.JsonSerializer;
 import org.rajeshkurup.common.mapper.JsonSerializer.JsonSerializerBuilder;
 import org.rajeshkurup.common.model.ApiCallDetails;
@@ -234,6 +236,21 @@ public class Main {
         queueEx.minPop().ifPresent(node -> System.out.println(node.getRecId()));
         System.out.println(queueEx.size());
         System.out.println();
+
+        IntArrayList intArray = new IntArrayList();
+        intArray.add(1);
+        intArray.add(9);
+        intArray.add(5);
+        intArray.add(2);
+        intArray.add(8);
+        intArray.add(7);
+        intArray.add(6);
+        intArray.add(3);
+        intArray.add(4);
+        
+        System.out.println(intArray.findSubArraySize(2, 15));
+
+        System.out.println(intArray.findSmallestSubArraySize(16));
     }
 
 }
