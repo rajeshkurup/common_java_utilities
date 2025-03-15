@@ -1,11 +1,15 @@
 package org.rajeshkurup.common;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.LongStream;
 
+import org.rajeshkurup.common.fileops.FileOperations;
+import org.rajeshkurup.common.fileops.FileOperator;
 import org.rajeshkurup.common.list.IntArrayList;
 import org.rajeshkurup.common.mapper.JsonSerializer;
 import org.rajeshkurup.common.mapper.JsonSerializer.JsonSerializerBuilder;
@@ -249,8 +253,28 @@ public class Main {
         intArray.add(4);
         
         System.out.println(intArray.findSubArraySize(2, 15));
-
         System.out.println(intArray.findSmallestSubArraySize(16));
+        System.out.println();
+
+        FileOperations fileOperations = new FileOperator();
+        System.out.println("isExist=" + fileOperations.isExist("/Users/rajeshraghavakurup/Desktop/image.png"));
+        try {
+            System.out.println("size=" + fileOperations.size("/Users/rajeshraghavakurup/Desktop/image.png"));
+            System.out.println("listFiles=" + fileOperations.listFiles("/Users/rajeshraghavakurup/Desktop").orElse(null));
+            System.out.println("createFolder=" + fileOperations.createFolder("/Users/rajeshraghavakurup/Desktop/myfolder"));
+            System.out.println("write=" + fileOperations.write("/Users/rajeshraghavakurup/Desktop/myfolder/myfile.txt", "Hello World", true));
+            System.out.println("delete=" + fileOperations.delete("/Users/rajeshraghavakurup/Desktop/myfolder"));
+            System.out.println("createFolder2=" + fileOperations.createFolder("/Users/rajeshraghavakurup/Desktop/myfolder/myfolder"));
+            System.out.println("write2=" + fileOperations.write("/Users/rajeshraghavakurup/Desktop/myfolder/myfolder/myfile.txt", "Hello World", true));
+            System.out.println("copyFile=" + fileOperations.copy("/Users/rajeshraghavakurup/Desktop/myfolder/myfolder/myfile.txt", "/Users/rajeshraghavakurup/Desktop/myfolder"));
+            System.out.println("copyFile2=" + fileOperations.copy("/Users/rajeshraghavakurup/Desktop/myfolder", "/Users/rajeshraghavakurup/Desktop/myfolder2"));
+            System.out.println("moveFile=" + fileOperations.copy("/Users/rajeshraghavakurup/Desktop/myfolder2", "/Users/rajeshraghavakurup/Desktop/myfolder3"));
+            System.out.println("writeLines=" + fileOperations.writeLines("/Users/rajeshraghavakurup/Desktop/myfolder/myfolder3/myfolder2/myfolder/myfile.txt", List.of("Hello World1","Hello World2"), true));
+            System.out.println("readLines=" + fileOperations.readLines("/Users/rajeshraghavakurup/Desktop/myfolder/myfolder3/myfolder2/myfolder/myfile.txt").orElse(null));
+            System.out.println("read=" + fileOperations.read("/Users/rajeshraghavakurup/Desktop/myfolder/myfolder3/myfolder2/myfolder/myfile.txt").orElse(null));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
