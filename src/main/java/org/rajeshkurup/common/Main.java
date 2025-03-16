@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.LongStream;
 
+import org.rajeshkurup.common.b64.B64Operations;
+import org.rajeshkurup.common.b64.B64Operator;
 import org.rajeshkurup.common.fileops.FileOperations;
 import org.rajeshkurup.common.fileops.FileOperator;
 import org.rajeshkurup.common.list.IntArrayList;
@@ -95,7 +97,7 @@ public class Main {
 
         long num = 1000000007L;
         Date start = new Date();
-        boolean isPrime = PrimeChecker.isPrime(num);
+        System.out.println("isPrime = " + PrimeChecker.isPrime(num));
         long timeTakenMs = new Date().getTime() - start.getTime();
         System.out.println(new DecimalFormat("###,###,###,### = ").format(num) + num);
         System.out.println("TimeTakenMs = " + timeTakenMs);
@@ -275,6 +277,10 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        B64Operations b64Operations = new B64Operator();
+        System.out.println("encoded_val=" + b64Operations.encode("Hello World!").orElse(""));
+        System.out.println("decoded_val=" + b64Operations.decode("SGVsbG8gV29ybGQh").orElse(""));
     }
 
 }
