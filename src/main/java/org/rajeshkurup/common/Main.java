@@ -12,6 +12,8 @@ import org.rajeshkurup.common.b64.B64Operations;
 import org.rajeshkurup.common.b64.B64Operator;
 import org.rajeshkurup.common.fileops.FileOperations;
 import org.rajeshkurup.common.fileops.FileOperator;
+import org.rajeshkurup.common.hash.HashOperator;
+import org.rajeshkurup.common.hash.Hashable;
 import org.rajeshkurup.common.list.IntArrayList;
 import org.rajeshkurup.common.mapper.JsonSerializer;
 import org.rajeshkurup.common.mapper.JsonSerializer.JsonSerializerBuilder;
@@ -278,9 +280,18 @@ public class Main {
             e.printStackTrace();
         }
 
+        System.out.println();
         B64Operations b64Operations = new B64Operator();
         System.out.println("encoded_val=" + b64Operations.encode("Hello World!").orElse(""));
         System.out.println("decoded_val=" + b64Operations.decode("SGVsbG8gV29ybGQh").orElse(""));
+
+        System.out.println();
+        Hashable hashOperator = new HashOperator();
+        System.out.println("md5=" + hashOperator.hash("Hello World", Hashable.HashType.MD5).orElse(""));
+        System.out.println("sha1=" + hashOperator.hash("Hello World", Hashable.HashType.SHA1).orElse(""));
+        System.out.println("sha256=" + hashOperator.hash("Hello World", Hashable.HashType.SHA256).orElse(""));  
+        System.out.println("sha384=" + hashOperator.hash("Hello World", Hashable.HashType.SHA384).orElse(""));
+        System.out.println("sha512=" + hashOperator.hash("Hello World", Hashable.HashType.SHA512).orElse(""));
     }
 
 }
