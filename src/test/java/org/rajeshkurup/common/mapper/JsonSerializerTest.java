@@ -17,9 +17,9 @@ public class JsonSerializerTest {
 
     @BeforeEach
     public void init() {
-        this.jsonSerializer = JsonSerializer.JsonSerializerBuilder.builder(ApiCallDetails.class).timeZone("").build();
-        this.jsonSerializerIst = JsonSerializer.JsonSerializerBuilder.builder(ApiCallDetails.class).timeZone("IST").build();
-        this.jsonSerializerPst = JsonSerializer.JsonSerializerBuilder.builder(TestObject.class).timeZone("PST").build();
+        this.jsonSerializer = JsonSerializer.builder(ApiCallDetails.class).timeZone("").build();
+        this.jsonSerializerIst = JsonSerializer.builder(ApiCallDetails.class).timeZone("IST").build();
+        this.jsonSerializerPst = JsonSerializer.builder(TestObject.class).timeZone("PST").build();
     }
 
     @AfterEach

@@ -14,9 +14,11 @@ import org.rajeshkurup.common.fileops.FileOperations;
 import org.rajeshkurup.common.fileops.FileOperator;
 import org.rajeshkurup.common.hash.HashOperator;
 import org.rajeshkurup.common.hash.Hashable;
+import org.rajeshkurup.common.http.HttpOperations;
+import org.rajeshkurup.common.http.HttpOperator;
+import org.rajeshkurup.common.http.HttpOpsResponse;
 import org.rajeshkurup.common.list.IntArrayList;
 import org.rajeshkurup.common.mapper.JsonSerializer;
-import org.rajeshkurup.common.mapper.JsonSerializer.JsonSerializerBuilder;
 import org.rajeshkurup.common.model.ApiCallDetails;
 import org.rajeshkurup.common.prime.PrimeChecker;
 import org.rajeshkurup.common.queue.MinMaxQueue;
@@ -45,11 +47,11 @@ public class Main {
         String jsonTxt = apiCallDetails.toString();
         System.out.println(jsonTxt + "\n");
 
-        JsonSerializer<ApiCallDetails> jsonSerializerPst = JsonSerializerBuilder.builder(ApiCallDetails.class).timeZone("America/Los_Angeles").build();
+        JsonSerializer<ApiCallDetails> jsonSerializerPst = JsonSerializer.builder(ApiCallDetails.class).timeZone("America/Los_Angeles").build();
         ApiCallDetails apiCallDetails2 = jsonSerializerPst.fromJson(jsonTxt);
         System.out.println(jsonSerializerPst.toJson(apiCallDetails2) + "\n");
 
-        JsonSerializer<ApiCallDetails> jsonSerializerIst = JsonSerializerBuilder.builder(ApiCallDetails.class).timeZone("Asia/Kolkata").build();
+        JsonSerializer<ApiCallDetails> jsonSerializerIst = JsonSerializer.builder(ApiCallDetails.class).timeZone("Asia/Kolkata").build();
         ApiCallDetails apiCallDetails3 = jsonSerializerIst.fromJson(jsonTxt);
         System.out.println(jsonSerializerIst.toJson(apiCallDetails3) + "\n");
 
@@ -292,6 +294,10 @@ public class Main {
         System.out.println("sha256=" + hashOperator.hash("Hello World", Hashable.HashType.SHA256).orElse(""));  
         System.out.println("sha384=" + hashOperator.hash("Hello World", Hashable.HashType.SHA384).orElse(""));
         System.out.println("sha512=" + hashOperator.hash("Hello World", Hashable.HashType.SHA512).orElse(""));
+
+        System.out.println();
+        HttpOperations httpOps = HttpOperator.builder("http://wwww.google.com").connectTimeoutMs(1000).build();
+        System.out.println(httpOps.get().orElse(null).toString());
     }
 
 }

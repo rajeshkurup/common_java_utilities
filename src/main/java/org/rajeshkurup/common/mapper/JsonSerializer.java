@@ -35,17 +35,21 @@ public class JsonSerializer<T> {
         }
     }
 
-    public static class JsonSerializerBuilder<T> {
+    public static <T> Builder<T> builder(@NonNull final Class<T> typeRef) {
+        return new Builder<>(typeRef);
+    }
+
+    public static class Builder<T> {
 
         private final Class<T> typeRef;
         private String timeZone;
 
-        private JsonSerializerBuilder(@NonNull final Class<T> typeRef) {
+        private Builder(@NonNull final Class<T> typeRef) {
             this.typeRef = typeRef;
             this.timeZone = JsonSerializer.TIME_ZONE_UTC;
         }
 
-        public JsonSerializerBuilder<T> timeZone(@NonNull final String timeZone) {
+        public Builder<T> timeZone(@NonNull final String timeZone) {
             if(StringUtils.isNotBlank(timeZone)) {
                 this.timeZone =  timeZone;
             }
@@ -54,10 +58,6 @@ public class JsonSerializer<T> {
 
         public JsonSerializer<T> build() {
             return new JsonSerializer<>(this.typeRef, this.timeZone);
-        }
-
-        public static <T> JsonSerializerBuilder<T> builder(@NonNull final Class<T> typeRef) {
-            return new JsonSerializerBuilder<>(typeRef);
         }
 
     }

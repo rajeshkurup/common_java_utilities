@@ -7,7 +7,7 @@ import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import org.rajeshkurup.common.list.Listable;
-import org.rajeshkurup.common.mapper.JsonSerializer.JsonSerializerBuilder;
+import org.rajeshkurup.common.mapper.JsonSerializer;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_EMPTY)
@@ -97,7 +97,7 @@ public class ApiCallDetails implements Listable<ApiCallDetails>, Comparable<ApiC
 
     @Override
     public String toString() {
-        return JsonSerializerBuilder.builder(ApiCallDetails.class).build().toJson(this);
+        return JsonSerializer.builder(ApiCallDetails.class).build().toJson(this);
     }
 
     @Override
