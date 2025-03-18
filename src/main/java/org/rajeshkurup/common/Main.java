@@ -16,7 +16,6 @@ import org.rajeshkurup.common.hash.HashOperator;
 import org.rajeshkurup.common.hash.Hashable;
 import org.rajeshkurup.common.http.HttpOperations;
 import org.rajeshkurup.common.http.HttpOperator;
-import org.rajeshkurup.common.http.HttpOpsResponse;
 import org.rajeshkurup.common.list.IntArrayList;
 import org.rajeshkurup.common.mapper.JsonSerializer;
 import org.rajeshkurup.common.model.ApiCallDetails;
